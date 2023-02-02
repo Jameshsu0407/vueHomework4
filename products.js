@@ -1,13 +1,15 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+// 匯入分頁元件
+import pagination from "./components/pagination.js";
 
 let productModal = null;
 let delModal = null;
+const apiUrl = 'https://vue3-course-api.hexschool.io/v2';
+const apiPath = "cation_api";
 
 const app = createApp({
 	data() {
 		return {
-			apiUrl: "https://vue3-course-api.hexschool.io/v2",
-			apiPath: "cation_api",
 			products: [],
 			tempProduct: {},
 			pagination: {},
@@ -19,7 +21,7 @@ const app = createApp({
 		 * 確認是否登入
 		 */
 		checkLogin() {
-			const url = `${this.apiUrl}/api/user/check`;
+			const url = `${apiUrl}/api/user/check`;
 			axios
 				.post(url)
 				.then(() => {
@@ -34,7 +36,7 @@ const app = createApp({
 		 * 取得資料
 		 */
 		getData(page = 1) {
-			const url = `${this.apiUrl}/api/${this.apiPath}/admin/products?page=${page}`;
+			const url = `${apiUrl}/api/${apiPath}/admin/products?page=${page}`;
 			axios
 				.get(url)
 				.then((res) => {
@@ -75,6 +77,9 @@ const app = createApp({
 			}
 		}
 	},
+	components: {
+		pagination, 
+	},
 	mounted() {
 		// 取出 Token
 		const token = document.cookie.replace(
@@ -86,21 +91,10 @@ const app = createApp({
 	},
 });
 
-// 分頁元件
-app.component('pagination', {
-	template: '#pagination',
-	props: ['pagination'],
-	methods: {
-		emitPages(item){
-			this.$emit('emit-pages', item);
-		}
-	},
-});
-
 // 新增、編輯元件
 app.component('productModal', {
 	template: '#productModal',
-	props: ['tempProduct', 'isNew', 'apiUrl', 'apiPath'],
+	props: ['tempProduct', 'isNew'],
 	mounted() {
 		productModal = new bootstrap.Modal(document.getElementById("productModal"));
 	},
@@ -109,7 +103,7 @@ app.component('productModal', {
 		 * 新增/修改
 		 * @param   {[object]}  product  [待處理的產品]
 		 */
-		updateProduct(product, apiUrl, apiPath, isNew) {
+		updateProduct(product, isNew) {
 			let url = `${apiUrl}/api/${apiPath}/admin/product`;
 			let http = "post";
 
@@ -142,7 +136,7 @@ app.component('delProductModal', {
 		/**
 		 * 刪除
 		 */
-		delProduct(product, apiUrl, apiPath) {
+		delProduct(product) {
 			const url = `${apiUrl}/api/${apiPath}/admin/product/${product.id}`;
 
 			axios

@@ -73,40 +73,9 @@
         <!-- 刪除視窗元件 -->
         <del-product-modal :temp-product="tempProduct" :api-url="apiUrl" :api-path="apiPath" @update="getData"> </del-product-modal>
 
-        
-        <!-- Modal -->
     </div>
 
-    <!-- 分頁模板 -->
-    <script type="text/x-template" id="pagination">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <!-- 上一頁 -->
-                <li class="page-item"
-                    :class="pagination.current_page == 1 ? 'disabled' : '' ">
-                    <a  @click.prevent="emitPages(pagination.current_page - 1)"
-                        class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <!-- 頁數 -->
-                <li v-for="(item, index) in pagination.total_pages"
-                    :key="index"
-                    class="page-item"
-                    :class="item === pagination.current_page ? 'active' : '' ">
-                    <a class="page-link" href="#" @click.prevent="emitPages(item)">{{item}}</a>
-                </li>
-                <!-- 下一頁 -->
-                <li class="page-item"
-                    :class="pagination.current_page == pagination.total_pages ? 'disabled' : '' ">
-                    <a  @click.prevent="emitPages(pagination.current_page + 1)"
-                        class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </script>
+    
 
     <!-- 新增、編輯視窗模板 -->
     <script type="text/x-template" id="productModal">
@@ -185,12 +154,12 @@
                                     <div class="mb-3 col-md-6">
                                         <label for="origin_price" class="form-label">原價</label>
                                         <input id="origin_price" type="number" min="0" class="form-control"
-                                            placeholder="請輸入原價" v-model="tempProduct.origin_price">
+                                            placeholder="請輸入原價" v-model.number="tempProduct.origin_price">
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label for="price" class="form-label">售價</label>
                                         <input id="price" type="number" min="0" class="form-control" placeholder="請輸入售價"
-                                            v-model="tempProduct.price">
+                                            v-model.number="tempProduct.price">
                                     </div>
                                 </div>
                                 <hr>
@@ -221,7 +190,7 @@
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             取消
                         </button>
-                        <button type="button" class="btn btn-primary" @click="updateProduct(tempProduct, apiUrl, apiPath, isNew)">
+                        <button type="button" class="btn btn-primary" @click="updateProduct(tempProduct, isNew)">
                             確認
                         </button>
                     </div>
@@ -250,7 +219,7 @@
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             取消
                         </button>
-                        <button type="button" class="btn btn-danger" @click="delProduct(tempProduct, apiUrl, apiPath,)">
+                        <button type="button" class="btn btn-danger" @click="delProduct(tempProduct)">
                             確認刪除
                         </button>
                     </div>
