@@ -1,4 +1,6 @@
 // 分頁元件
+
+// 匯出
 export default {
     template: `<nav aria-label="Page navigation example">
         <ul class="pagination">
